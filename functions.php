@@ -107,6 +107,18 @@ kc_add_map(array(
 		'params' => array(
 
 			array(
+			'name' => 'style',
+			'label' => 'Style',
+		 
+			'type' => 'select',  // USAGE SELECT TYPE
+			'options' => array(  // THIS FIELD REQUIRED THE PARAM OPTIONS
+				'yes_image' => 'YES Image',
+				'no_image' => 'No Image',
+			)
+		 
+			),
+
+			array(
 			'name' => 'name',
 			'type' => 'text',
 			'label' => 'name',
@@ -149,6 +161,12 @@ kc_add_map(array(
 			),
 
 			array(
+			'name' => 'btn_link',
+			'type' => 'link',
+			'label' => 'Button LInk',
+			),
+
+			array(
 			'name' => 'image',
 			'type' => 'attach_image',
 			'label' => 'Member Photo',
@@ -169,16 +187,22 @@ function team_shortcode($first,$second){
 				'email' => '',
 				'btn_text' => '',
 				'btn_color' => '',
+				'btn_link' => '',
 				'image' => '',
-
-
+				'style' => '',
 
 
 		),$first);
 		extract($output);
+		$btn_link = kc_parse_link($btn_link);
+		$btn_href = $btn_link['url'];
+		$btn_target = $btn_link['target'];
+		//print_r($btn_link);
 			?>
 
-	  <div class="column">
+	
+	<?php if ($style == 'yes_image') {?>
+	<div class="column">
 	    <div class="card">
 
 	    	<?php
@@ -193,21 +217,31 @@ function team_shortcode($first,$second){
 	        <p class="title"><?php echo $des;?></p>
 	        <p><?php echo $cont;?></p>
 	        <p><?php echo $email;?></p>
+	        <p><a target="<?php echo $btn_target;?>" href="<?php echo $btn_href;?>"><button class="button" style="background: <?php echo $btn_color;?>"><?php echo $btn_text?></button></a></p>
+	      </div>
+	    </div>
+	</div>
+	<?php } ?>
+
+	<?php if ($style == 'no_image') {?>
+	<div class="column">
+	    <div class="card">
+	      <div class="container">
+	        <h2><?php echo $output ['name'];?></h2>
+	        <p class="title"><?php echo $des;?></p>
+	        <p><?php echo $cont;?></p>
+	        <p><?php echo $email;?></p>
 	        <p><button class="button" style="background: <?php echo $btn_color;?>"><?php echo $btn_text?></button></p>
 	      </div>
 	    </div>
-	  </div>
+	</div>
+	<?php } ?>
 
 <?php }
 
 
 
-
-
-
-
 add_filter( 'widget_text', 'do_shortcode' );
-
 
 add_shortcode( 'testimonial', function (){
 ?>
@@ -215,7 +249,6 @@ add_shortcode( 'testimonial', function (){
 <?php ob_start();?>
 <div class="contentBox">
   	<div class="innerBox">
-
 
 	<?php
 
