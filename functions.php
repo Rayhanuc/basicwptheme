@@ -177,8 +177,6 @@ kc_add_map(array(
 }
 
 
-add_shortcode( 'team', 'team_shortcode' );
-
 function team_shortcode($first,$second){
 	$output = shortcode_atts(array(
 				'name' => '',
